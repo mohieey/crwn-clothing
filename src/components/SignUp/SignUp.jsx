@@ -24,6 +24,11 @@ class SignUp extends Component {
 
     const { email, displayName, password, confirmPassword } = this.state;
 
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    }
+
     if (password !== confirmPassword) {
       alert(`passwords don't match`);
       return;
