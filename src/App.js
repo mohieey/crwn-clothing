@@ -5,7 +5,7 @@ import Header from "./components/Header/Header";
 import HomePage from "./pages/HomePage/HomePage";
 import ShopPage from "./pages/Shop/ShopPage";
 import SignInAndUp from "./pages/SignInAndUp/SignInAndUp";
-import { auth } from "./Firebase/FirebaseUtils";
+import { auth, createUserProfileDocument } from "./Firebase/FirebaseUtils";
 
 const HatsPage = () => {
   return <h1>Hats Page</h1>;
@@ -21,9 +21,23 @@ class App extends React.Component {
   unSubscribeFronAuth = null;
 
   componentDidMount() {
-    this.unSubscribeFronAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-      console.log(user);
+    this.unSubscribeFronAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapshot) => {
+          console.log(snapshot.data());
+
+          this.setState(
+            {
+              currentUser: { id: snapshot.id, ...snapshot.data() },
+            },
+            () => console.log(this.state)
+          );
+        });
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 
