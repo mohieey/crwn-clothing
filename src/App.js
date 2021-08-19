@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Router, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header/Header";
 import HomePage from "./pages/HomePage/HomePage";
@@ -26,8 +26,6 @@ class App extends React.Component {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot((snapshot) => {
-          console.log(snapshot.data());
-
           this.setState(
             {
               currentUser: { id: snapshot.id, ...snapshot.data() },
@@ -36,7 +34,7 @@ class App extends React.Component {
           );
         });
       } else {
-        this.setState({ currentUser: userAuth });
+        this.setState({ currentUser: userAuth }, () => console.log(this.state));
       }
     });
   }
