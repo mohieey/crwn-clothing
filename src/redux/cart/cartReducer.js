@@ -14,6 +14,14 @@ const cartReducer = (prevState = initialState, action) => {
         cartItems: addItemToCart(prevState.cartItems, action.payload),
       };
 
+    case cartActionTypes.CLEAR_ITEM:
+      return {
+        ...prevState,
+        cartItems: prevState.cartItems.filter(
+          (item) => item.id !== action.payload.id
+        ),
+      };
+
     default:
       return prevState;
   }
