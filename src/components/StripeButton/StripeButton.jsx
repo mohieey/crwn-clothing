@@ -4,12 +4,9 @@ import { stripeKey } from "./../../keys";
 const StripeCheckoutButton = ({ price }) => {
   const priceInCentsForStripe = price * 100;
 
-  const publishableKey = stripeKey;
+  const publishableKey = process.env.STRIPE_KEY || stripeKey;
 
-  const onSubmit = (token) => {
-    console.log(token);
-    alert("Payment Successful!");
-  };
+  const onSubmit = (token) => {};
   return (
     <StripeCheckout
       label="Pay Now"
@@ -17,7 +14,7 @@ const StripeCheckoutButton = ({ price }) => {
       billingAddress
       shippingAddress
       description={`Your price is $${price}`}
-      amount={price}
+      amount={priceInCentsForStripe}
       panelLabel="Pay Now"
       token={onSubmit}
       stripeKey={publishableKey}
