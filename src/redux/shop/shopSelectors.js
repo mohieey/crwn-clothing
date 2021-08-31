@@ -6,3 +6,14 @@ export const selectShopCollections = createSelector(
   [selectShop],
   (shop) => shop.collections
 );
+
+export const selectShopCollectionsAsArray = createSelector(
+  [selectShopCollections],
+  (collections) => Object.keys(collections).map((key) => collections[key])
+);
+
+export const selectCollection = (collectionName) =>
+  createSelector(
+    [selectShopCollections],
+    (collections) => collections[collectionName]
+  );
